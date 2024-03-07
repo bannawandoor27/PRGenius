@@ -8,20 +8,19 @@ from .gpt3_utils import generate_pr_description
 # Load environment variables
 load_dotenv()
 
-def create_pull_request(repo_owner, repo_name, github_token, base_branch='develop'):
+def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_branch='develop'):
     """Creates a pull request on GitHub using details from the current branch and commits."""
-    head_branch = get_current_branch()
     if not head_branch:
         print("Could not determine the current branch. Exiting...")
         return
     
     commits = get_unmerged_commits()
-    if commits== ['']:
+    if commits == ['']:
         print("No unmerged commits found to create a PR. Exiting...")
         return
-    print(commits)
-    # pr_description = generate_pr_description(commits=commits)
-    pr_description = 'testttt'
+
+    print("Commits to be included in the PR:", commits)
+    pr_description = generate_pr_description(commits=commits)
     if not pr_description:
         print("Failed to generate PR description. Exiting...")
         return
@@ -54,8 +53,15 @@ def main():
     if not all([repo_owner, repo_name, github_token]):
         print("Repository owner, name, or GitHub token is not set. Check your .env file or environment variables.")
         return
+    # Use environment variable for base branch if not provided as a command-line argument
+    base_branch = os.getenv('GITHUB_REPO_BASE_BRANCH', 'develop')
 
-    create_pull_request(repo_owner, repo_name, github_token)
+    head_branch = get_current_branch()
+    if head_branch is None:
+        print("Error determining current branch. Exiting...")
+        return
+
+    create_pull_request(repo_owner, repo_name, github_token,head_branch,base_branch=base_branch)
 
 if __name__ == "__main__":
     main()
