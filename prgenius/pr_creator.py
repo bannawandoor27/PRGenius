@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 import os
 from .git_utils import get_current_branch, get_unmerged_commits, push_to_origin,fetch_repo_details
-from .gpt3_utils import generate_pr_description
+from .gpt3_utils import generate_pr_content, generate_pr_description, generate_pr_title
 
 # Load environment variables
 load_dotenv()
@@ -42,7 +42,7 @@ def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_b
         return
     repo_details = fetch_repo_details(repo_owner, repo_name, github_token)
     print("Commits to be included in the PR:", commits)
-    pr_description = generate_pr_description(commits=commits,repo_name=repo_name,repo_details=repo_details)
+    pr_title,pr_description = generate_pr_content(commits=commits,repo_details=repo_details,repo_name=repo_name)
     if not pr_description:
         print("Failed to generate PR description. Exiting...")
         return
@@ -53,7 +53,7 @@ def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_b
         'Accept': 'application/vnd.github.v3+json'
     }
     data = {
-        'title': f'Pull Request from {head_branch}',
+        'title': f'PR from {head_branch} to {base_branch}',
         'body': pr_description,
         'head': head_branch,
         'base': base_branch
