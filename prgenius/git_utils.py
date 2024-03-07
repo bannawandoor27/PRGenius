@@ -1,4 +1,5 @@
 import subprocess
+import requests
 
 def get_current_branch():
     try:
@@ -22,3 +23,17 @@ def push_to_origin(head_branch):
     except subprocess.CalledProcessError as e:
         print(f"Failed to push {head_branch} to origin. Error: {e}")
         return False
+    
+def fetch_repo_details(repo_owner, repo_name, github_token):
+    """Fetches repository details from GitHub."""
+    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}"
+    headers = {
+        'Authorization': f'token {github_token}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()  # Return the JSON response with repository details
+    else:
+        print("Failed to fetch repository details:", response.text)
+        return {}
