@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name='PRGenius', 
-    version='0.2.0',  
+    version='1.0.1',  
     packages=find_packages(), 
     install_requires=[
         'requests', 
@@ -20,8 +20,8 @@ setup(
             'prgenius=prgenius.pr_creator:main',  
         ],
     },
-    author='Your Name',
-    author_email='your_email@example.com',
+    author='Hasanul Banna',
+    author_email='bannawandoor@gmail.com',
     description='Automates PR creation on GitHub using GPT-3 for description generation based on commit messages.',
     long_description=read('README.md'),  
     long_description_content_type='text/markdown',

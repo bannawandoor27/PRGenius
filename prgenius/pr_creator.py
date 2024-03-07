@@ -3,7 +3,7 @@ import argparse
 import requests
 from dotenv import load_dotenv
 import os
-from .git_utils import get_current_branch, get_unmerged_commits
+from .git_utils import get_current_branch, get_unmerged_commits, push_to_origin,fetch_repo_details
 from .gpt3_utils import generate_pr_description
 
 # Load environment variables
@@ -31,14 +31,18 @@ def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_b
     if not head_branch:
         print("Could not determine the current branch. Exiting...")
         return
+    # Ensure the branch is pushed to origin before creating PR
+    if not push_to_origin(head_branch):
+        print("Exiting due to failure pushing branch to origin.")
+        return
     
     commits = get_unmerged_commits()
     if commits == ['']:
         print("No unmerged commits found to create a PR. Exiting...")
         return
-
+    repo_details = fetch_repo_details(repo_owner, repo_name, github_token)
     print("Commits to be included in the PR:", commits)
-    pr_description = generate_pr_description(commits=commits)
+    pr_description = generate_pr_description(commits=commits,repo_name=repo_name,repo_details=repo_details)
     if not pr_description:
         print("Failed to generate PR description. Exiting...")
         return
