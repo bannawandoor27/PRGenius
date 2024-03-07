@@ -3,7 +3,7 @@ import argparse
 import requests
 from dotenv import load_dotenv
 import os
-from .git_utils import get_current_branch, get_unmerged_commits
+from .git_utils import get_current_branch, get_unmerged_commits, push_to_origin
 from .gpt3_utils import generate_pr_description
 
 # Load environment variables
@@ -30,6 +30,10 @@ def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_b
     """Creates a pull request on GitHub using details from the current branch and commits."""
     if not head_branch:
         print("Could not determine the current branch. Exiting...")
+        return
+    # Ensure the branch is pushed to origin before creating PR
+    if not push_to_origin(head_branch):
+        print("Exiting due to failure pushing branch to origin.")
         return
     
     commits = get_unmerged_commits()
