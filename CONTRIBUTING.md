@@ -4,7 +4,7 @@ First off, thank you for considering contributing to PRGenius! It's people like 
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [PRGenius Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [project_email@example.com].
+This project and everyone participating in it is governed by the [PRGenius Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [bannawandoor@gmail.com].
 
 ## How Can I Contribute?
 
@@ -13,14 +13,14 @@ This project and everyone participating in it is governed by the [PRGenius Code 
 This section guides you through submitting a bug report for PRGenius. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
 
 - **Use the GitHub Issues search** — check if the issue has already been reported.
-- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/yourusername/PRGenius/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample** or an **executable test case** demonstrating the expected behavior that is not occurring.
+- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/bannawandoor27/PRGenius/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample** or an **executable test case** demonstrating the expected behavior that is not occurring.
 
 ### Suggesting Enhancements
 
 This section guides you through submitting an enhancement suggestion for PRGenius, including completely new features and minor improvements to existing functionality. Following these guidelines helps maintainers and the community understand your suggestion and find related suggestions.
 
 - **Use the GitHub Issues search** to check if the enhancement has already been suggested.
-- If you're unable to find an open issue suggesting the enhancement, [open a new one](https://github.com/yourusername/PRGenius/issues/new). Provide a clear and detailed explanation of the feature or improvement you want to see, including any documents or links for context.
+- If you're unable to find an open issue suggesting the enhancement, [open a new one](https://github.com/bannawandoor27/PRGenius/issues/new). Provide a clear and detailed explanation of the feature or improvement you want to see, including any documents or links for context.
 
 ### Pull Requests
 
