@@ -1,4 +1,5 @@
 # pr_creator.py
+import argparse
 import requests
 from dotenv import load_dotenv
 import os
@@ -7,6 +8,23 @@ from .gpt3_utils import generate_pr_description
 
 # Load environment variables
 load_dotenv()
+
+def create_and_merge_pull_request(repo_owner, repo_name, github_token, head_branch, base_branch, pr_number):
+    """
+    Attempts to auto-merge the created pull request.
+    This is a simplified example and might need adjustments based on merge requirements.
+    """
+    url = f'https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr_number}/merge'
+    headers = {
+        'Authorization': f'token {github_token}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    data = {'merge_method': 'merge'}  # Can be 'merge', 'squash', or 'rebase'
+    response = requests.put(url, headers=headers, json=data)
+    if response.status_code == 200:
+        print("Pull Request merged successfully!")
+    else:
+        print("Failed to merge Pull Request:", response.text)
 
 def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_branch='develop'):
     """Creates a pull request on GitHub using details from the current branch and commits."""
@@ -38,11 +56,16 @@ def create_pull_request(repo_owner, repo_name, github_token, head_branch, base_b
     }
 
     response = requests.post(url, headers=headers, json=data)
+
     if response.status_code == 201:
-        print("Pull Request created successfully!")
-        print(f"PR URL: {response.json().get('html_url')}")
+        pr_number = response.json().get('number')
+        print(f"Pull Request created successfully! PR Number: {pr_number}")
+        return pr_number
     else:
         print("Failed to create Pull Request:", response.text)
+        return None
+
+        
 
 def main():
     # Extract these variables appropriately, e.g., from environment variables or configuration
@@ -60,8 +83,23 @@ def main():
     if head_branch is None:
         print("Error determining current branch. Exiting...")
         return
+    parser = argparse.ArgumentParser(description='Create and optionally merge a pull request on GitHub.')
+    parser.add_argument('action', choices=['create', 'createmerge'], help='Action to perform: create a PR or create and merge a PR.')
+    # Other argument definitions remain the same
 
-    create_pull_request(repo_owner, repo_name, github_token,head_branch,base_branch=base_branch)
+    args = parser.parse_args()
+
+    # Extracting and checking other necessary variables remain the same
+
+    if args.action == 'createmerge':
+        # Create PR and then attempt to merge it
+        pr_number = create_pull_request(repo_owner, repo_name, github_token, head_branch, base_branch)
+        if pr_number:
+            create_and_merge_pull_request(repo_owner, repo_name, github_token, head_branch, base_branch, pr_number)
+    else:
+        # Just create PR
+        create_pull_request(repo_owner, repo_name, github_token, head_branch, base_branch)
+
 
 if __name__ == "__main__":
     main()
