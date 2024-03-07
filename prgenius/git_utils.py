@@ -13,4 +13,3 @@ def get_unmerged_commits(branch='origin/develop'):
     commits = subprocess.check_output(['git', 'log', f'{merge_base}..HEAD', '--pretty=format:%s']).decode('utf-8')
     return commits.strip().split('\n')
 
-print(get_unmerged_commits())
